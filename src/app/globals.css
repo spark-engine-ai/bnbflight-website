@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink antialiased;
+    font-feature-settings: 'ss01' on, 'cv01' on;
+  }
+
+  ::selection {
+    @apply bg-coral/20 text-coral-dark;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink-soft shadow-soft;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-semibold transition-all duration-300 ease-out;
+  }
+
+  .btn-primary {
+    @apply btn bg-ink text-white shadow-lift hover:-translate-y-0.5 hover:shadow-[0_28px_70px_-18px_rgba(19,21,27,0.4)] active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply btn border border-line bg-surface text-ink hover:-translate-y-0.5 hover:border-ink/30 hover:shadow-soft active:translate-y-0;
+  }
+
+  .btn-coral {
+    @apply btn bg-coral text-white shadow-[0_20px_50px_-15px_rgba(248,79,92,0.6)] hover:-translate-y-0.5 hover:shadow-[0_28px_65px_-15px_rgba(248,79,92,0.7)] active:translate-y-0;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-soft transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply hover:-translate-y-1 hover:border-ink/15 hover:shadow-lift;
+  }
+
+  .link-underline {
+    @apply relative;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-underline:hover {
+    background-size: 100% 1.5px;
+  }
+
+  .prose-doc {
+    @apply max-w-none text-[16.5px] leading-[1.8] text-ink-soft;
+  }
+
+  .prose-doc h2 {
+    @apply mb-4 mt-12 font-display text-[26px] font-medium text-ink first:mt-0;
+  }
+
+  .prose-doc h3 {
+    @apply mb-3 mt-9 font-display text-[20px] font-medium text-ink;
+  }
+
+  .prose-doc p {
+    @apply mb-5;
+  }
+
+  .prose-doc ul {
+    @apply mb-5 ml-5 list-disc space-y-2;
+  }
+
+  .prose-doc ol {
+    @apply mb-5 ml-5 list-decimal space-y-2;
+  }
+
+  .prose-doc strong {
+    @apply font-semibold text-ink;
+  }
+
+  .prose-doc blockquote {
+    @apply my-6 rounded-r-xl border-l-[3px] border-azure bg-azure-light/60 px-5 py-4 text-ink not-italic;
+  }
+
+  .prose-doc a {
+    @apply font-medium text-azure link-underline;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  .bg-dot-grid {
+    background-image: radial-gradient(circle, rgba(19,21,27,0.09) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+}
