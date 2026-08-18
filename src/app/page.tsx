@@ -35,12 +35,13 @@ const integrations = [
 
 const cycleSteps = [
   {
-    title: 'Ingest',
-    detail: 'Fresh calendar, reservation, and market data pulled straight from PriceLabs.'
+    title: 'Scan the competitor map',
+    detail:
+      "Airbnb's own “Similar listings” map is read for every open date, paced slowly on purpose — nothing downstream starts until this fully finishes."
   },
   {
-    title: 'Scan the competitor map',
-    detail: "Airbnb's own “Similar listings” map is read for every open date, paced slowly on purpose."
+    title: 'Ingest',
+    detail: 'Fresh calendar, reservation, and market data pulled straight from PriceLabs, right before pricing.'
   },
   {
     title: 'Solve the whole calendar',

@@ -13,15 +13,15 @@ A host can also trigger that exact same full cycle on demand at any point, using
 
 Here's what actually happens inside one of those three daily runs, from start to finish.
 
-## Step one: pulling fresh data
+## Step one: re-scanning the competitor map
 
-The cycle opens by pulling current data — the latest state of the listing's own calendar, recent bookings, and whatever has changed since the last run. This is the foundation everything downstream depends on: the Bayesian booking-probability model needs current booking history to reason from, and the calendar solver needs to know exactly which dates are actually still open before it can price them.
-
-## Step two: re-scanning the competitor map
-
-Next, Geomap re-scans Airbnb's own "Similar listings" map for every currently unbooked date, up to 90 days out — reading the same live map a guest browsing the listing would see, not a stored dataset from an earlier point in time. As covered in more detail elsewhere, this scan moves deliberately, with a randomized 40-to-95-second pause between each date, so the pattern never looks automated to Airbnb. That means this step is the slowest part of the cycle by design — a tradeoff made in favor of data that's both current and gathered respectfully, rather than rushed.
+The cycle opens with Geomap re-scanning Airbnb's own "Similar listings" map for every currently unbooked date, up to 90 days out — reading the same live map a guest browsing the listing would see, not a stored dataset from an earlier point in time. As covered in more detail elsewhere, this scan moves deliberately, with a randomized 40-to-95-second pause between each date, so the pattern never looks automated to Airbnb. That means this step is the slowest part of the cycle by design — a tradeoff made in favor of data that's both current and gathered respectfully, rather than rushed. Nothing later in the cycle starts until this step is genuinely finished; the whole point of running it first is that every later step gets to use its actual results, not whatever an earlier, unrelated scan happened to leave behind.
 
 The result is a fresh read of exactly what nearby comparable listings are actually charging for each specific date, right now — not what they were charging at the last scheduled scrape from some third-party service.
+
+## Step two: pulling fresh data
+
+With the competitor read in hand, the cycle pulls current data — the latest state of the listing's own calendar, recent bookings, and whatever has changed since the last run. Doing this right before the algorithm reasons about the calendar, rather than hours earlier at the top of the cycle, keeps it as current as possible at the moment it actually matters: the Bayesian booking-probability model needs current booking history to reason from, and the calendar solver needs to know exactly which dates are actually still open before it can price them.
 
 ## Step three: the algorithm reasons about the whole calendar at once
 
@@ -45,6 +45,6 @@ The last step happens without the host lifting a finger. The PriceLabs Sync Bot 
 
 ## What's actually going on, in one sentence
 
-Three times a day, at times the host chose: fresh data comes in, the competitor map gets re-read live and carefully, the algorithm reasons about the entire calendar together rather than one date at a time, a fixed set of safety rules checks every proposed change, and the results reach Airbnb automatically — with a verified, honest record of what actually happened at every step.
+Three times a day, at times the host chose: the competitor map gets re-read live and carefully, fresh booking data comes in right after, the algorithm reasons about the entire calendar together rather than one date at a time, a fixed set of safety rules checks every proposed change, and the results reach Airbnb automatically — with a verified, honest record of what actually happened at every step.
 
 If you'd like to see one of these cycles run against your own listing, reach out to team@xplorebnb.com and we can show you.
