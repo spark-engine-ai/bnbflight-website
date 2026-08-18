@@ -42,9 +42,9 @@ function VoiceOrb() {
     for (let i = 0; i < position.count; i++) {
       const idx = i * 3
 
-      const x = original[idx]
-      const y = original[idx + 1]
-      const z = original[idx + 2]
+      const x = original[idx]!
+      const y = original[idx + 1]!
+      const z = original[idx + 2]!
 
       const length = Math.sqrt(x * x + y * y + z * z) || 1
 
@@ -90,19 +90,19 @@ function VoiceOrb() {
     const linePositions = new Float32Array(linePairs.length * 2 * 3)
 
     for (let i = 0; i < linePairs.length; i++) {
-      const [a, b] = linePairs[i]
+      const [a, b] = linePairs[i]!
 
       const lineIdx = i * 6
       const aIdx = a * 3
       const bIdx = b * 3
 
-      linePositions[lineIdx] = original[aIdx]
-      linePositions[lineIdx + 1] = original[aIdx + 1]
-      linePositions[lineIdx + 2] = original[aIdx + 2]
+      linePositions[lineIdx] = original[aIdx]!
+      linePositions[lineIdx + 1] = original[aIdx + 1]!
+      linePositions[lineIdx + 2] = original[aIdx + 2]!
 
-      linePositions[lineIdx + 3] = original[bIdx]
-      linePositions[lineIdx + 4] = original[bIdx + 1]
-      linePositions[lineIdx + 5] = original[bIdx + 2]
+      linePositions[lineIdx + 3] = original[bIdx]!
+      linePositions[lineIdx + 4] = original[bIdx + 1]!
+      linePositions[lineIdx + 5] = original[bIdx + 2]!
     }
 
     const lineGeometry = new THREE.BufferGeometry()
@@ -186,13 +186,13 @@ function VoiceOrb() {
     for (let i = 0; i < pointPositions.count; i++) {
       const idx = i * 3
 
-      const ox = original[idx]
-      const oy = original[idx + 1]
-      const oz = original[idx + 2]
+      const ox = original[idx]!
+      const oy = original[idx + 1]!
+      const oz = original[idx + 2]!
 
-      const nx = directions[idx]
-      const ny = directions[idx + 1]
-      const nz = directions[idx + 2]
+      const nx = directions[idx]!
+      const ny = directions[idx + 1]!
+      const nz = directions[idx + 2]!
 
       const verticalWave =
         Math.sin(
@@ -261,14 +261,17 @@ function VoiceOrb() {
         0.022 *
         speechEnergy
 
-      pointArray[idx] +=
-        (x - pointArray[idx]) * 0.17
+      pointArray[idx] =
+        pointArray[idx]! +
+        (x - pointArray[idx]!) * 0.17
 
-      pointArray[idx + 1] +=
-        (y - pointArray[idx + 1]) * 0.17
+      pointArray[idx + 1] =
+        pointArray[idx + 1]! +
+        (y - pointArray[idx + 1]!) * 0.17
 
-      pointArray[idx + 2] +=
-        (z - pointArray[idx + 2]) * 0.17
+      pointArray[idx + 2] =
+        pointArray[idx + 2]! +
+        (z - pointArray[idx + 2]!) * 0.17
     }
 
     pointPositions.needsUpdate = true
@@ -285,19 +288,19 @@ function VoiceOrb() {
     const lineArray = linePositions.array as Float32Array
 
     for (let i = 0; i < linePairs.length; i++) {
-      const [a, b] = linePairs[i]
+      const [a, b] = linePairs[i]!
 
       const lineIdx = i * 6
       const aIdx = a * 3
       const bIdx = b * 3
 
-      lineArray[lineIdx] = pointArray[aIdx]
-      lineArray[lineIdx + 1] = pointArray[aIdx + 1]
-      lineArray[lineIdx + 2] = pointArray[aIdx + 2]
+      lineArray[lineIdx] = pointArray[aIdx]!
+      lineArray[lineIdx + 1] = pointArray[aIdx + 1]!
+      lineArray[lineIdx + 2] = pointArray[aIdx + 2]!
 
-      lineArray[lineIdx + 3] = pointArray[bIdx]
-      lineArray[lineIdx + 4] = pointArray[bIdx + 1]
-      lineArray[lineIdx + 5] = pointArray[bIdx + 2]
+      lineArray[lineIdx + 3] = pointArray[bIdx]!
+      lineArray[lineIdx + 4] = pointArray[bIdx + 1]!
+      lineArray[lineIdx + 5] = pointArray[bIdx + 2]!
     }
 
     linePositions.needsUpdate = true
