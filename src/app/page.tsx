@@ -25,9 +25,11 @@ import { getAllBlogPosts } from '@/lib/content'
 import { formatDate } from '@/lib/format'
 
 const integrations = [
-  'PriceLabs API',
-  "Airbnb's own Similar Listings map",
+  'PriceLabs',
+  "Airbnb's geo-map",
   'Groq',
+  'Claude',
+  'Open AI',
   'Deepgram',
   'ElevenLabs'
 ]
@@ -161,10 +163,10 @@ export default function HomePage() {
           </div>
 
           <Reveal delay={0.15} y={30} className="relative">
-            <div className="relative aspect-[4/3.4] w-full rounded-[28px] border border-line bg-gradient-to-b from-haze to-surface shadow-lift">
+            <div className="relative aspect-[4/3.4] w-full">
               <Hero3D className="absolute inset-0 h-full w-full" />
               <div className="absolute left-5 top-5 rounded-full border border-line bg-surface/90 px-3 py-1.5 text-[11.5px] font-medium text-ink-soft backdrop-blur">
-                Illustrative 3D pricing model
+                Jarvis, built in — always listening
               </div>
             </div>
           </Reveal>
