@@ -26,11 +26,10 @@ import { formatDate } from '@/lib/format'
 
 const integrations = [
   'PriceLabs',
-  "Airbnb's geo-map",
+  "Airbnb Geo-map",
   'Groq',
   'Claude',
   'Open AI',
-  'Deepgram',
   'ElevenLabs'
 ]
 
@@ -166,7 +165,7 @@ export default function HomePage() {
             <div className="relative aspect-[4/3.4] w-full">
               <Hero3D className="absolute inset-0 h-full w-full" />
               <div className="absolute left-5 top-5 rounded-full border border-line bg-surface/90 px-3 py-1.5 text-[11.5px] font-medium text-ink-soft backdrop-blur">
-                Jarvis, built in — always listening
+                Jarvis, built in — ready to help
               </div>
             </div>
           </Reveal>
@@ -216,7 +215,7 @@ export default function HomePage() {
               image="/images/app/calendar-heatmap.png"
               imageAlt="Bnbflight Calendar tab showing a color-coded forward calendar heatmap"
               reverse
-              focusTop={140}
+              
             />
 
             <FeatureShowcase
@@ -231,7 +230,7 @@ export default function HomePage() {
               ]}
               image="/images/app/recommendations.png"
               imageAlt="Bnbflight Recommendations tab listing per-date pricing decisions"
-              focusTop={140}
+              
             />
 
             <FeatureShowcase
@@ -247,7 +246,7 @@ export default function HomePage() {
               image="/images/app/market.png"
               imageAlt="Bnbflight Market tab comparing pricing and occupancy against nearby listings"
               reverse
-              focusTop={140}
+              
             />
 
             <FeatureShowcase
@@ -262,7 +261,7 @@ export default function HomePage() {
               ]}
               image="/images/app/reservations.png"
               imageAlt="Bnbflight Reservations tab showing booking pace and a reservation ledger"
-              focusTop={140}
+              
             />
 
             <FeatureShowcase
@@ -278,7 +277,7 @@ export default function HomePage() {
               image="/images/app/geomap-3d.png"
               imageAlt="Bnbflight Geomap tab showing a 3D visualization of nearby competitor listings"
               reverse
-              focusTop={140}
+              
             />
           </div>
         </div>

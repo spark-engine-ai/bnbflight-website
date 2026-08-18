@@ -1,57 +1,139 @@
-import Image from 'next/image'
+'use client'
 
-// The real dimensions every screenshot in public/images/app was captured at.
-// Used to compute an aspect ratio that shows the FULL width of the image
-// after the top strip is cropped — without this, a mismatched fixed aspect
-// (e.g. 16/10) forces object-fit:cover to ALSO crop the left/right edges
-// and more of the vertical frame than intended, which is what made these
-// screenshots look like they were cutting off "so much of the image."
+import Image from 'next/image'
+import { useRef, useState } from 'react'
+
 const SOURCE_WIDTH = 1920
 const SOURCE_HEIGHT = 1020
 
-/**
- * Wraps a real product screenshot in a light "browser window" chrome and
- * crops out the top identification strip (listing name/city/API status) via
- * object-position — every screenshot here is genuine, captured from the
- * running app, but that strip's specific identifying details and live
- * financial figures aren't part of the public site. The chrome itself is
- * light grey, matching an actual macOS/Chrome title bar — not a dark
- * terminal-style bar, which read as heavy and out of place on a light page.
- */
+const LENS_SIZE = 300
+const ZOOM = 4.5
+
+type LensState = {
+  x: number
+  y: number
+  percentX: number
+  percentY: number
+  visible: boolean
+}
+
 export function BrowserFrame({
   src,
-  alt,
-  focusTop = 92
+  alt
 }: {
   src: string
   alt: string
-  focusTop?: number
 }) {
-  const aspect = `${SOURCE_WIDTH} / ${SOURCE_HEIGHT - focusTop}`
+  const frameRef = useRef<HTMLDivElement>(null)
+
+  const [lens, setLens] = useState<LensState>({
+    x: 0,
+    y: 0,
+    percentX: 0,
+    percentY: 0,
+    visible: false
+  })
+
+  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    const frame = frameRef.current
+    if (!frame) return
+
+    const rect = frame.getBoundingClientRect()
+
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+
+    setLens({
+      x,
+      y,
+      percentX: (x / rect.width) * 100,
+      percentY: (y / rect.height) * 100,
+      visible: true
+    })
+  }
+
+  function openFullImage() {
+    window.open(src, '_blank', 'noopener,noreferrer')
+  }
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-line bg-surface shadow-lift">
-      <div className="flex h-6 items-center gap-1.5 border-b border-line bg-haze px-3.5">
-        <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
-        <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
-        <span className="h-2 w-2 rounded-full bg-[#28c840]" />
-      </div>
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: aspect }}>
+    <div
+      ref={frameRef}
+      className="relative overflow-visible"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() =>
+        setLens((current) => ({
+          ...current,
+          visible: true
+        }))
+      }
+      onMouseLeave={() =>
+        setLens((current) => ({
+          ...current,
+          visible: false
+        }))
+      }
+    >
+      <button
+        type="button"
+        onClick={openFullImage}
+        className="
+          block
+          w-full
+          cursor-zoom-in
+          overflow-hidden
+          rounded-lg
+          border
+          border-line
+          bg-surface
+          text-left
+          shadow-lift
+          focus-visible:outline-none
+          focus-visible:ring-2
+          focus-visible:ring-coral
+          focus-visible:ring-offset-2
+        "
+        aria-label={`Open ${alt} full size`}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          width={SOURCE_WIDTH}
+          height={SOURCE_HEIGHT}
+          sizes="(min-width: 1024px) 58vw, 100vw"
+          className="block h-auto w-full select-none"
+          priority={false}
+          draggable={false}
+        />
+      </button>
+
+      {lens.visible && (
         <div
-          className="absolute inset-x-0"
-          style={{ top: `-${focusTop}px`, height: `${SOURCE_HEIGHT}px` }}
-        >
-          <Image
-            src={src}
-            alt={alt}
-            width={SOURCE_WIDTH}
-            height={SOURCE_HEIGHT}
-            className="w-full transition-transform duration-700 ease-out group-hover:scale-[1.015]"
-            sizes="(min-width: 1024px) 900px, 100vw"
-            priority={false}
-          />
-        </div>
-      </div>
+          aria-hidden="true"
+          className="
+            pointer-events-none
+            absolute
+            z-50
+            hidden
+            rounded-full
+            border-[3px]
+            border-white/95
+            shadow-[0_18px_50px_rgba(0,0,0,0.32),inset_0_0_0_1px_rgba(0,0,0,0.1)]
+            lg:block
+          "
+          style={{
+            width: LENS_SIZE,
+            height: LENS_SIZE,
+            left: lens.x,
+            top: lens.y,
+            transform: 'translate(-50%, -50%)',
+            backgroundImage: `url("${src}")`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: `${ZOOM * 100}% auto`,
+            backgroundPosition: `${lens.percentX}% ${lens.percentY}%`
+          }}
+        />
+      )}
     </div>
   )
 }
